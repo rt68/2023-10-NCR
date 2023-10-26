@@ -27,3 +27,19 @@ mkdir yavin_4
 mv death_star/millenium_falcon/ yavin_4/
 cd yavin_4/ && mkdir x_wing
 mv millenium_falcon/princess_leia.txt .
+mv millenium_falcon/luke.txt x_wing/
+mv millenium_falcon/ ../ && mv x_wing/ ../
+cd ../death_star/
+mkdir tie_fighter_1 tie_fighter_2 tie_fighter_3
+mv darth_vader.txt tie_fighter_1/
+ cp storm_trooper.txt tie_fighter_2 && cp storm_trooper.txt tie_fighter_3
+mv tie_fighter_* ../
+cd ..
+rm -r tie_fighter_2
+rm -r tie_fighter_3
+cd x_wing/
+ touch the_force.txt
+cd ..
+rm -r death_star/
+mv x_wing/ yavin_4/
+mv millenium_falcon/ yavin_4/
