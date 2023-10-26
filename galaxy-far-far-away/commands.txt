@@ -1,0 +1,29 @@
+mkdir galaxy-far-far-away
+ cd galaxy-far-far-away/
+touch commands.txt
+notepad commands.txt
+mkdir death_star
+cd death_star/
+ touch darth_vader.txt princess_leia.txt storm_trooper.txt
+ mkdir tatooine
+cd tatooine/
+ touch luke.txt ben_kenobi.txt
+mkdir millenium_falcon
+cd millenium_falcon/
+touch han_solo.txt chewbaca.txt
+cd ..
+mv ben_kenobi.txt obi_wan.txt
+cp ../death_star/storm_trooper.txt .
+mv luke.txt millenium_falcon/
+mv obi_wan.txt millenium_falcon/
+mv millenium_falcon/ ../
+cd ..
+mv millenium_falcon/ ./death_star/
+mv ./death_star/princess_leia.txt ./death_star/millenium_falcon/
+cd death_star/millenium_falcon/
+rm obi_wan.txt
+cd ~/Desktop/2023-10-NCR/galaxy-far-far-away/
+mkdir yavin_4
+mv death_star/millenium_falcon/ yavin_4/
+cd yavin_4/ && mkdir x_wing
+mv millenium_falcon/princess_leia.txt .
