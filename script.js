@@ -17,31 +17,58 @@ document.addEventListener("DOMContentLoaded", function(event) {
   // Do all of your work inside the document.addEventListener  
 
   // Part 1
-
+const mainTitle = document.querySelector('#main-title')
+mainTitle.textContent = 'My name is Dom'
 
   // Part 2
-
+const bodyElement = document.querySelector('body')
+bodyElement.style.backgroundColor =  '#3da4ab';
 
   // Part 3
-
+  const favoriteThingsList = document.querySelector('#favorite-things')
+  favoriteThingsList.removeChild(favoriteThingsList.lastElementChild)
 
   // Part 4
+  const specialTitles = document.querySelectorAll('.special-title')
+  specialTitles.forEach(function(title) {
+    title.style.fontSize = '2rem'
+  })
 
-
-  // Part 5
-
+  // Part 5 ?
+  const pastRaces = document.querySelector('#past-races')
+  pastRaces.removeChild(pastRaces.children[3])
 
   // Part 6
-
+const newLiRace = document.createElement('li')
+newLiRace.textContent = 'Chengdu'
+pastRaces.appendChild(newLiRace)
 
   // Part 7
-
+  const newBlogPost = document.createElement('div')
+  newBlogPost.classList.add('blog-post')
+  const newBlogPostTitle = document.createElement('h2')
+  newBlogPostTitle.textContent = 'New City'
+  const newBlogPostText = document.createElement('p')
+  newBlogPostText.textContent = 'I guess I will miss Chicago'
+  newBlogPost.appendChild(newBlogPostTitle)
+  newBlogPost.appendChild(newBlogPostText)
+  const lastBlog = document.querySelector('.blog-post' + ':last-child')
+  lastBlog.appendChild(newBlogPost)
 
   // Part 8
-
+  const quoteTitle = document.querySelector('#quote-title')
+  quoteTitle.addEventListener('click', randomQuote)
 
   // Part 9
-
+  const blogPosts = document.querySelectorAll('.blog-post')
+  blogPosts.forEach(function(post) {
+    post.addEventListener('mouseout', function() {
+      post.classList.toggle('purple')
+    })
+    post.addEventListener('mouseenter', function() {
+      post.classList.toggle('red')
+    })
+  })
 
 
 
