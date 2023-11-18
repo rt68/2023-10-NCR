@@ -45,15 +45,17 @@ pastRaces.appendChild(newLiRace)
 
   // Part 7
   const newBlogPost = document.createElement('div')
-  newBlogPost.classList.add('blog-post')
-  const newBlogPostTitle = document.createElement('h2')
-  newBlogPostTitle.textContent = 'New City'
+  newBlogPost.classList.add('blog-post', 'purple')
+  const newBlogPostTitle = document.createElement('h1')
+  newBlogPostTitle.textContent = 'Chengdu'
   const newBlogPostText = document.createElement('p')
-  newBlogPostText.textContent = 'I guess I will miss Chicago'
+  newBlogPostText.textContent = 'COME EAT SOMETHING SPICY!'
   newBlogPost.appendChild(newBlogPostTitle)
   newBlogPost.appendChild(newBlogPostText)
-  const lastBlog = document.querySelector('.blog-post' + ':last-child')
-  lastBlog.appendChild(newBlogPost)
+  const main = document.querySelector('.main')
+  main.appendChild(newBlogPost);
+  // const lastBlog = document.querySelector('.blog-post' + ':last-child')
+  // lastBlog.appendChild(newBlogPost)
 
   // Part 8
   const quoteTitle = document.querySelector('#quote-title')
