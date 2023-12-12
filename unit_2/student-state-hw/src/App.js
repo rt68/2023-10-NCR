@@ -76,7 +76,7 @@ function App() {
           <Student student={student}/>
         )
       })}
-   
+   {/* <Student student={studentData.students[0]} /> */}
     </div>
   );
 }

@@ -14,7 +14,7 @@ function Student(props) {
                    </div>
                 )
             })}
-      
+      {/* <Score score={props.student.scores[0]} /> */}
            
 
         </div>
