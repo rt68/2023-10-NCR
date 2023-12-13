@@ -1,0 +1,64 @@
+html {
+  border-left: 5px solid lightgray;
+}
+body {
+  min-height: 100vh;
+  font-family: 'Luna', sans-serif;
+  max-width: 1000px;
+  margin: auto;
+}
+header, main, footer {
+  padding: 1rem 2rem;
+}
+h1 {
+  color: tomato;
+}
+img {
+  width: 100%;
+}
+ul {
+  padding: none;
+  list-style-type: none;
+}
+.headernav, .footernav {
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+}
+.hnava {
+  color: lightgray;
+}
+
+.fnava {
+
+  color: tomato;
+}
+.blogtitle {
+  font-size: 200%;
+}
+.continuea {
+  display: block;
+  text-align: right;
+  font-weight: bold;
+  color: tomato;
+  margin-bottom: 4rem;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 2rem;
+}
+article>p::first-letter {
+  font-size: 400%;
+  font-weight: bold;
+  color: lightgray;
+  float: left;
+  margin-right: 5px;
+
+}
+#copyright {
+  color: lightgray;
+}
+
+p {
+  color: grey;
+
+}
