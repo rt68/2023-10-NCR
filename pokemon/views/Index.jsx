@@ -17,7 +17,7 @@ class Index extends React.Component {
                               <li key={i}>
                                   The{' '}
                                   <a href={`/pokemon/${i}`}>
-                                      {pokemon.name}
+                                      {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
                                   </a>
                                   <img src={pokemon.img} />
                               </li>
