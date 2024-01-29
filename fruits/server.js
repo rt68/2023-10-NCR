@@ -1,10 +1,22 @@
+require('dotenv').config();
+const mongoose = require('mongoose')
 const express = require('express');
 const app = express();
 const fruits = require('./models/fruits')
+const Fruit = require('./models/Fruit')
 const vegetables = require('./models/vegetables')
 
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+mongoose.connection.once('open', ()=> {
+    console.log('connected to mongo');
+});
+
 app.use(express.urlencoded({extended:false}));
 app.use((req, res, next) => {
     console.log('I run for all routes');
@@ -37,8 +49,13 @@ app.get('/vegetables/:index', (req, res) => {
    });
 });
 //Index fruits
-app.get('/fruits', function(req, res){
-    res.render('fruits/Index', { fruits: fruits });
+app.get('/fruits', (req, res) =>{
+    Fruit.find({})
+        .then((allFruits) => {
+            res.render('fruits/Index', {fruits: allFruits});
+        })
+        .catch((err) => console.error(err));
+   
 });   
 
 //New fruits
@@ -54,17 +71,24 @@ app.post('/fruits', (req, res) => {
     } else { //if not checked, req.body.readyToEat is undefined
         req.body.readyToEat = false; //do some data correction
     }
-    fruits.push(req.body);
-    console.log(fruits);
-    res.redirect('/fruits'); //send the user back to /fruits
-});
+    Fruit.create(req.body)
+        .then((createdFruit) => {
+            res.redirect('./fruits')
+        }) 
+        .catch((err) => console.error(err));
+ });
+    
 //Edit
 //Show
 //Show Fruits
-app.get('/fruits/:index', (req, res) => {
-     res.render('fruits/Show', { //second param must be an object
-        fruit: fruits[req.params.index] //there will be a variable available inside the ejs file called fruit, its value is fruits[req.params.indexOfFruitsArray]
-    });
+app.get('/fruits/:id', (req, res) => {
+    Fruit.findOne({_id: req.params.id})
+    .then((foundFruit) => {
+        res.render('fruits/Show', { //second param must be an object
+        fruit: foundFruit 
+    })
+     })
+     .catch(err => console.error(err))
 });
 
 app.listen(3000, () => {
