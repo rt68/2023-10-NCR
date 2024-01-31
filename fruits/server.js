@@ -5,6 +5,7 @@ const app = express();
 const fruits = require('./models/fruits')
 const Fruit = require('./models/Fruit')
 const vegetables = require('./models/vegetables')
+const Vegetable = require('./models/Vegetable')
 
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
