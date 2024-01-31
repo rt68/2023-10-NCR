@@ -2,23 +2,23 @@ const React = require('react');
 
 class Index extends React.Component {
   render() {
-      const { vegetables } = this.props;
+      const { fruits } = this.props;
       return (
               <div>
-                  <h1>Vegetables Index Page</h1>
+                  <h1>Fruits Index Page</h1>
                   <nav>
-                    <a href="/vegetables/new">Create new vegetable</a>
+                    <a href="/fruits/new">Create new fruit</a>
                   </nav>
                   <ul>
-                      {vegetables.map((vegetable) => {
+                      {fruits.map((fruit, i) => {
                           return (
-                              <li key={vegetable._id}>
+                              <li key={i}>
                                   The{' '}
-                                  <a href={`/vegetables/${vegetable._id}`}>
-                                      {vegetable.name}
+                                  <a href={`/fruits/${fruit._id}`}>
+                                      {fruit.name}
                                   </a>{' '}
-                                  is {vegetable.color}. <br></br>
-                                  {vegetable.readyToEat
+                                  is {fruit.color}. <br></br>
+                                  {fruit.readyToEat
                                       ? `It is ready to eat.`
                                       : `It is not ready to eat.`}
                                   <br />
@@ -30,4 +30,4 @@ class Index extends React.Component {
       );
   }
 }
-module.exports = Index;
+// module.exports = Index;
