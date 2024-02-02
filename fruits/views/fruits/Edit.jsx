@@ -2,22 +2,37 @@ const React = require('react');
 // As you can see we are using the app layout
 const DefaultLayout = require('../layout/Default')
 
-class Edit extends React.Component{
+class Edit extends React.Component {
   render() {
+    const { fruit } = this.props;
     return (
-      <DefaultLayout title="Edit Page">      
-     {/* See the Layout takes in a prop called Title and we pass Edit Page to it  note: comments can't go first or last in  jsx return*/}
-          {/* form is not complete we will do that below*/}
-          <form action={`/fruits/${this.props.fruit._id}?_method=PUT`} method="POST">
-          Name: <input type="text" name="name" defaultValue={this.props.fruit.name}/><br/>
-          Color: <input type="text" name="color"  defaultValue={this.props.fruit.color}/><br/>
-          Is Ready To Eat:
-              { this.props.fruit.readyToEat? <input type="checkbox" name="readyToEat" defaultChecked />: <input type="checkbox" name="readyToEat"/> }
-          <br/>
-          <input type="submit" value="Submit Changes"/>
-      </form>
+      <DefaultLayout>
+        <div>
+          <form action={`/fruits/${fruit._id}?_method=PUT`} method="post">
+            <fieldset>
+              <legend>Edit a Fruit</legend>
+              <label htmlFor="name">NAME:</label>
+              <input type="text" name="name" placeholder="enter fruit name" 
+              defaultValue={fruit.name}/>
+
+              <label htmlFor="color"> COLOR:</label>
+              <input type="text" name="color" placeholder="enter fruit name"
+              defaultValue={fruit.color} />
+
+              <label htmlFor="readyToEat"> READY TO EAT:</label>
+              {
+                fruit.readyToEat?
+                <input type="checkbox" name="readyToEat" 
+                defaultChecked />:
+                <input type="checkbox" name="readyToEat" />
+              }
+              
+            </fieldset>
+            <input type="submit" value={`Edit ${fruit.name}`} />
+          </form>
+        </div>
       </DefaultLayout>
     )
   }
 }
-module.exports= Edit;
+module.exports = Edit;

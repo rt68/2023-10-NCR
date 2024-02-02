@@ -2,35 +2,25 @@ const React = require('react');
 const DefaultLayout = require('../layout/Default');
 
 class Index extends React.Component {
-  render(){
+  render() {
     const { fruits } = this.props;
     return (
-      <DefaultLayout title={"Fruits Index Page"}>
-        <nav>
-          <a href="/fruits/new">Create a New Fruit</a>
-        </nav>
-        <ul>
+      <DefaultLayout>
+        <div>
+          
           {
-            fruits.map((fruit)=>{
-              return (
-                <li key={fruit._id}>
-                  The <a href={`/fruits/${fruit._id}`}>{fruit.name}</a>
-                  {' '}is {fruit.color} <br/>
-                  {
-                    fruit.readyToEat?
-                    '  It is ready to eat':
-                    '  It is not ready to eat'
-                  }
-                  <br />
-                  <form action={`/fruits/${fruit._id}?_method=DELETE`} method="POST">
-                          <input type="submit" value="DELETE"/>
-                      </form>
-                      <a href={`/fruits/${fruit._id}/edit`}>Edit This Fruit</a>
-                </li>
-              )
-            })
+            fruits.map((fruit, i) => (
+              <article key={i}>
+                <a href={`/fruits/${fruit._id}`}>
+                  <h2>
+                    {fruit.name} - {fruit.readyToEat ? 'Ripe' : 'Not Ripe Yuck Thats Nasty'}
+                  </h2>
+                </a>
+              </article>
+            ))
           }
-        </ul>
+          <a href="/fruits/New"><button>Create A New Fruit</button></a>
+        </div>
       </DefaultLayout>
     )
   }

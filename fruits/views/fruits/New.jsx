@@ -1,18 +1,27 @@
 const React = require('react');
-
+const DefaultLayout = require('../layout/Default');
 class New extends React.Component {
   render() {
     return (
+      <DefaultLayout>
         <div>
-            <h1>New Fruit page</h1>
-            {/* NOTE: action will be the route, method will be the HTTP verb */}
-            <form action="/fruits" method="POST">
-              Name: <input type="text" name="name" /><br/>
-              Color: <input type="text" name="color" /><br/>
-              Is Ready To Eat: <input type="checkbox" name="readyToEat" /><br/>
-              <input type="submit" name="" value="Create Fruit"/>
-            </form>
-        </div>);
+          <form action="/fruits" method="post">
+            <fieldset>
+              <legend>Create a New Fruit</legend>
+              <label htmlFor="name">NAME:</label>
+              <input type="text" name="name" placeholder="enter fruit name" />
+
+              <label htmlFor="color"> COLOR:</label>
+              <input type="text" name="color" placeholder="enter fruit name" />
+
+              <label htmlFor="readyToEat"> READY TO EAT:</label>
+              <input type="checkbox" name="readyToEat" />
+            </fieldset>
+            <input type="submit" value="create New fruit" />
+          </form>
+        </div>
+      </DefaultLayout>
+    )
   }
 }
 

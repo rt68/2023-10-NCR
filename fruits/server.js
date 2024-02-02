@@ -1,63 +1,90 @@
+/////////////////////////////////////////////
+// Import Our Dependencies
+/////////////////////////////////////////////
 require('dotenv').config();
 const mongoose = require('mongoose')
 const express = require('express');
-const app = express();
+
 const fruits = require('./models/fruits')
 const Fruit = require('./models/Fruit')
 const vegetables = require('./models/vegetables')
 const Vegetable = require('./models/Vegetable')
 const methodOverride = require('method-override');
+const path = require('path');
+const morgan = require('morgan');
 
+/////////////////////////////////////////////////
+// Create our Express Application Object Bind Liquid Templating Engine
+/////////////////////////////////////////////////
+const app = express();
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
+/////////////////////////////////////////////
+// Database Connection
+/////////////////////////////////////////////
+// Setup inputs for our connect function
 mongoose.connect(process.env.MONGO_URI);
-mongoose.connection.once('open', ()=> {
-    console.log('connected to mongo');
-});
 
-app.use(express.urlencoded({extended:false}));
-app.use(methodOverride('_method'));
+// Events for when connection opens/disconnects/errors
+mongoose.connection
+    .on("open", () => console.log("Connected to Mongoose"))
+    .on("close", () => console.log("Disconnected from Mongoose"))
+    .on("error", (error) => console.error(error));
+
+/////////////////////////////////////////////////////
+// Middleware
+/////////////////////////////////////////////////////
+app.use(morgan("tiny")); //logging
+app.use(express.urlencoded({ extended: true }));  // parse urlencoded request bodies
+app.use(methodOverride('_method'));// override for put and delete requests from forms
+app.use(express.static("public")); // serve files from public statically
 
 app.use((req, res, next) => {
     console.log('I run for all routes');
     next();
 });
-//Seed Route
-app.get('/fruits/seed', (req, res)=>{
-    Fruit.insertMany([
-        {
-            name:'grapefruit',
-            color:'pink',
-            readyToEat:true
-        },
-        {
-            name:'grape',
-            color:'purple',
-            readyToEat:false
-        },
-        {
-            name:'avocado',
-            color:'green',
-            readyToEat:true
-        }
-    ])
-    .then(createdFruits => res.redirect('/fruits'))
-    .catch(err => console.error(err));
+////////////////////////////////////////////
+// Routes
+////////////////////////////////////////////
+app.get("/", (req, res) => {
+    res.send("your server is running... better catch it.");
 });
+
+//Seed Route
+app.get('/fruits/seed', (req, res) => {
+    // array of starter fruits
+    const startFruits = [
+        { name: "Orange", color: "orange", readyToEat: false },
+        { name: "Grape", color: "purple", readyToEat: false },
+        { name: "Banana", color: "orange", readyToEat: false },
+        { name: "Strawberry", color: "red", readyToEat: false },
+        { name: "Coconut", color: "brown", readyToEat: false },
+    ];
+    Fruit.deleteMany({})
+        .then(data => {
+            Fruit.insertMany(startFruits)
+                .then(createdFruits => res.redirect('/fruits'))
+                .catch(err => console.error(err));
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+          });
+})
 //Induces
 //Index vegetables
 // app.get('/vegetables', function(req, res){
 //     res.render('vegetables/Index', { vegetables: vegetables });
 // });   
-app.get('/vegetables', (req, res) =>{
+app.get('/vegetables', (req, res) => {
     Vegetable.find({})
         .then((allVegetables) => {
-            res.render('vegetables/Index', {vegetables: allVegetables});
+            res.render('vegetables/Index', { vegetables: allVegetables });
         })
         .catch((err) => console.error(err));
-   
-});   
+
+});
 //New vegetables
 app.get('/vegetables/new', (req, res) => {
     res.render('vegetables/New');
@@ -75,7 +102,7 @@ app.get('/vegetables/new', (req, res) => {
 //     res.redirect('/vegetables'); //send the user back to /vegetables
 // });
 app.post('/vegetables', (req, res) => {
-    if(req.body.readyToEat === 'on'){ //if checked, req.body.readyToEat is set to 'on'
+    if (req.body.readyToEat === 'on') { //if checked, req.body.readyToEat is set to 'on'
         req.body.readyToEat = true; //do some data correction
     } else { //if not checked, req.body.readyToEat is undefined
         req.body.readyToEat = false; //do some data correction
@@ -83,9 +110,9 @@ app.post('/vegetables', (req, res) => {
     Vegetable.create(req.body)
         .then((createdVegetable) => {
             res.redirect('/vegetables')
-        }) 
+        })
         .catch((err) => console.error(err));
- });
+});
 //Edit vegetables
 // app.get('/vegetables/:id/edit', (req, res)=>{
 //     Vegetable.findOne( { _id: req.params.id}) 
@@ -102,55 +129,64 @@ app.post('/vegetables', (req, res) => {
 //    });
 // });
 app.get('/vegetables/:id', (req, res) => {
-    Vegetable.findOne({_id: req.params.id})
-    .then((foundVegetable) => {
-        res.render('vegetables/Show', { //second param must be an object
-        vegetable: foundVegetable 
-    })
-     })
-     .catch(err => console.error(err))
+    Vegetable.findOne({ _id: req.params.id })
+        .then((foundVegetable) => {
+            res.render('vegetables/Show', { //second param must be an object
+                vegetable: foundVegetable
+            })
+        })
+        .catch(err => console.error(err))
 });
 
 //Index fruits
-app.get('/fruits', (req, res) =>{
+app.get('/fruits', (req, res) => {
     Fruit.find({})
         .then((allFruits) => {
-            res.render('fruits/Index', {fruits: allFruits});
+            res.render('fruits/Index', { fruits: allFruits });
         })
-        .catch((err) => console.error(err));
-   
-});   
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
+
+});
 
 //New fruits
 app.get('/fruits/new', (req, res) => {
     res.render('fruits/New');
 });
 //Delete
-app.delete('/fruits/:id', (req, res)=>{
-    Fruit.deleteOne({_id: req.params.id})
-    .then(deleteInfo => {
-        console.log(deleteInfo)
-        res.redirect('/fruits')
-    })
-    .catch(err => console.error(err))
+app.delete('/fruits/:id', (req, res) => {
+    Fruit.deleteOne({ _id: req.params.id })
+        .then(deleteInfo => {
+            console.log(deleteInfo)
+            res.redirect('/fruits')
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
 });
 //Update
-app.put('/fruits/:id', (req, res)=>{
-    if(req.body.readyToEat === 'on'){
+app.put('/fruits/:id', (req, res) => {
+    if (req.body.readyToEat === 'on') {
         req.body.readyToEat = true;
     } else {
         req.body.readyToEat = false;
     }
-    Fruit.updateOne({ _id: req.params.id}, req.body)
+    Fruit.updateOne({ _id: req.params.id }, req.body)
         .then(updateInfo => {
             console.log(updateInfo);
             res.redirect(`/fruits/${req.params.id}`);
-    })
-    .catch(err => console.error(err))
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
 });
 //Create fruits
 app.post('/fruits', (req, res) => {
-    if(req.body.readyToEat === 'on'){ //if checked, req.body.readyToEat is set to 'on'
+    if (req.body.readyToEat === 'on') { //if checked, req.body.readyToEat is set to 'on'
         req.body.readyToEat = true; //do some data correction
     } else { //if not checked, req.body.readyToEat is undefined
         req.body.readyToEat = false; //do some data correction
@@ -158,31 +194,42 @@ app.post('/fruits', (req, res) => {
     Fruit.create(req.body)
         .then((createdFruit) => {
             res.redirect('/fruits')
-        }) 
-        .catch((err) => console.error(err));
- });
-    
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
+});
+
 //Edit
-app.get('/fruits/:id/edit', (req, res)=>{
-    Fruit.findOne( { _id: req.params.id}) 
-    .then(foundFruit => res.render('fruits/Edit', 
-    {
-        fruit: foundFruit
-    }))
-    .catch(err => console.error(err));
+app.get('/fruits/:id/edit', (req, res) => {
+    Fruit.findOne({ _id: req.params.id })
+        .then(foundFruit => res.render('fruits/Edit',
+            {
+                fruit: foundFruit
+            }))
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
 });
 //Show
 //Show Fruits
 app.get('/fruits/:id', (req, res) => {
-    Fruit.findOne({_id: req.params.id})
-    .then((foundFruit) => {
-        res.render('fruits/Show', { //second param must be an object
-        fruit: foundFruit 
-    })
-     })
-     .catch(err => console.error(err))
+    Fruit.findOne({ _id: req.params.id })
+        .then((foundFruit) => {
+            res.render('fruits/Show', { //second param must be an object
+                fruit: foundFruit
+            })
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ error })
+        });
 });
 
-app.listen(3000, () => {
-    console.log('listening on 3000');
-});
+//////////////////////////////////////////////
+// Server Listener
+//////////////////////////////////////////////
+const PORT = process.env.PORT;
+app.listen(PORT, () => console.log(`Now Listening on port ${PORT}`));
