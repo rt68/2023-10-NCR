@@ -21,6 +21,7 @@ class Index extends React.Component {
             <li key={flight._id} className={new Date(flight.departs) < new Date() ? 'past' : ''}>
 
               Airline: {flight.airline}, Flight No: {flight.flightNo}, Departs: {new Date(flight.departs).toLocaleString()}
+              <a href={`/flights/${flight._id}`}>View Details</a>
             </li>
           ))}
         </ul>
