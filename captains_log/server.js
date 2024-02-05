@@ -43,6 +43,13 @@ app.get('/logs/new', (req, res) => {
 //Delete
 //Update
 //Create
+app.post('/logs', (req, res) => {
+    // res.send('received')
+    if (req.body.shipIsBroken) {
+        req.body.shipIsBroken = req.body.shipIsBroken === 'on' ? true : false;
+    }
+    res.send(req.body)
+})
 //Edit
 //Show
 
