@@ -77,6 +77,16 @@ app.post('/logs', (req, res) => {
         });
 })
 //Edit
+app.get('/logs/:id/edit', (req, res) => {
+    Log.findOne({ _id: req.params.id })
+      .then(log => {
+        res.render('Edit', { log }); // Pass the found log to the Edit component
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(400).json({err});
+      });
+  });
 //Show
 app.get('/logs/:id', (req, res) => {
     Log.findOne({_id: req.params.id})
