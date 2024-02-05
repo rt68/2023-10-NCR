@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const methodOverride = require('method-override');
-// const Flight = require('./models/Flight'); // Adjust according to your model's location
+const Log = require('./models/logs'); // Adjust according to your model's location
 //Set view engine
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
@@ -33,7 +33,14 @@ app.get("/", (req, res) => {
 //Induces
 //Index
 app.get("/logs", (req, res) => {
-    res.send("new")
+    Log.find({})
+    .then((allLogs) => {
+        res.render('Index', { logs: allLogs})
+    })
+    .catch((err) => {
+        console.error(err)
+        res.status(400).json({ err })
+    });
 })
 //New
 app.get('/logs/new', (req, res) => {
@@ -48,10 +55,27 @@ app.post('/logs', (req, res) => {
     if (req.body.shipIsBroken) {
         req.body.shipIsBroken = req.body.shipIsBroken === 'on' ? true : false;
     }
-    res.send(req.body)
+    Log.create(req.body)
+        .then((createdLog) => {
+            res.redirect(`/logs/${req.params.id}`)
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ err })
+        });
 })
 //Edit
 //Show
+app.get('/logs/:id', (req, res) => {
+    Log.findOne({_id: req.params.id})
+        .then((foundLog) => {
+            res.render('Show', {log: foundLog})
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(400).json({ err });
+        })
+})
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
