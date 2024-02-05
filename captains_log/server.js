@@ -48,6 +48,18 @@ app.get('/logs/new', (req, res) => {
   });
   
 //Delete
+app.delete('/logs/:id', (req, res) => {
+    Log.deleteOne({ _id: req.params.id })
+      .then((deleteInfo) => {
+        console.log(deleteInfo)
+        res.redirect('/logs'); // Redirect back to the index route after deletion
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(400).json(err);
+      });
+  });
+  
 //Update
 //Create
 app.post('/logs', (req, res) => {
