@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const methodOverride = require('method-override');
 const logsController = require('./controllers/logs')
+const foodlogsController = require('./controllers/foodlogs')
 //Set view engine
 app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 // Use logsController
 app.use('/', logsController);
+app.use('/foodlogs', foodlogsController)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
