@@ -61,15 +61,33 @@ app.delete('/logs/:id', (req, res) => {
   });
   
 //Update
+app.put('/logs/:id', (req, res) => {
+    if (req.body.shipIsBroken === 'on') {
+        req.body.shipIsBroken = true;
+    } else {
+        req.body.shipIsBroken = false;
+    }
+    Log.updateOne({ _id: req.params.id }, req.body)
+        .then(updateInfo => {
+            console.log(updateInfo);
+            res.redirect(`/logs/${req.params.id}`);
+        })
+        .catch((err) => {
+            console.error(err)
+            res.status(400).json({ err })
+        });
+});
 //Create
 app.post('/logs', (req, res) => {
     // res.send('received')
-    if (req.body.shipIsBroken) {
-        req.body.shipIsBroken = req.body.shipIsBroken === 'on' ? true : false;
+    if (req.body.shipIsBroken === 'on') {
+        req.body.shipIsBroken = true;
+    } else {
+        req.body.shipIsBroken = false;
     }
     Log.create(req.body)
         .then((createdLog) => {
-            res.redirect(`/logs/${req.params.id}`)
+            res.redirect(`/logs`)
         })
         .catch((err) => {
             console.error(err)
