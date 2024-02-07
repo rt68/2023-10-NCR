@@ -21,6 +21,7 @@ class Index extends React.Component {
           }
           <a href="/fruits/New"><button>Create A New Fruit</button></a>
         </div>
+        <a href="/users/logout"><button>Log out</button></a>
       </DefaultLayout>
     )
   }
