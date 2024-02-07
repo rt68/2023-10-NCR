@@ -9,7 +9,7 @@ class New extends React.Component {
         </head>
         <body>
           <h1>New Food Log Entry</h1>
-          <form action="/" method="POST">
+          <form action="/foodlogs" method="POST">
             <div>
               <label htmlFor="date">Date:</label>
               <input type="date" id="date" name="date" required />
@@ -40,7 +40,7 @@ class New extends React.Component {
               <input type="submit" value="Submit" />
             </div>
           </form>
-          <a href="/">Back to Food Logs</a>
+          <a href="/foodlogs">Back to Food Logs</a>
         </body>
       </html>
     );

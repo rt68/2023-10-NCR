@@ -47,7 +47,7 @@ router.put('/:id', (req, res) => {
 router.post('/', (req, res) => {
     FoodLog.create(req.body)
         .then((createdfoodLog) => {
-            res.redirect('/');
+            res.redirect('/foodlogs');
         })
         .catch((err) => {
             console.error(err)
