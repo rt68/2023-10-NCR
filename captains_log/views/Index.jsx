@@ -1,10 +1,11 @@
 const React = require('react');
-
+const DefaultLayout = require('./layout/DefaultLayout')
 class Index extends React.Component {
     render() {
         const { logs } = this.props; // Assuming logs are passed as props to this component
 
         return (
+            <DefaultLayout>
             <html>
                 <head>
                     <title>Captain's Log Entries</title>
@@ -27,6 +28,7 @@ class Index extends React.Component {
                     <a href="/logs/new">Add New Log Entry</a> {/* Link to the form for adding a new log */}
                 </body>
             </html>
+            </DefaultLayout>
         );
     }
 }

@@ -1,8 +1,9 @@
 const React = require('react');
-
+const DefaultLayout = require('./layout/DefaultLayout')
 class New extends React.Component {
   render() {
     return (
+      <DefaultLayout>
       <html>
         <head>
           <title>New Log Entry</title>
@@ -28,6 +29,7 @@ class New extends React.Component {
           </form>
         </body>
       </html>
+      </DefaultLayout>
     );
   }
 }

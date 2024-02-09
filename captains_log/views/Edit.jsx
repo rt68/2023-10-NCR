@@ -1,9 +1,10 @@
 const React = require('react');
-
+const DefaultLayout = require('./layout/DefaultLayout')
 class Edit extends React.Component {
   render() {
     const { log } = this.props;
     return (
+      <DefaultLayout>
       <html>
         <head>
           <title>Edit Log Entry</title>
@@ -30,6 +31,7 @@ class Edit extends React.Component {
           <a href="/logs">Back to Log Entries</a>
         </body>
       </html>
+      </DefaultLayout>
     );
   }
 }

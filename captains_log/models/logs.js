@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const commentSchema = new Schema({
   name: { type: String, required: true },
   text: { type: String, required: true },
+  username: String
 }, {
   timestamps: true // Adds createdAt and updatedAt timestamps to each comment
 });
