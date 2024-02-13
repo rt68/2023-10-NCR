@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
-import ShipDetails from '../pages/ShipDetails';
+
 
 export default function StarShipCard({starship}) {
     return (
-        <div className="starship-card">
-            <Link to={`/starships/${starship.name}`}>
+        <div className="bg-[#4d7c8a] text-white p-5 rounded-lg flex justify-center items-center text-xl uppercase">
+            <Link to={`/starships/${starship.name}`} >
             <h3>{starship?.name}</h3>
-            <p>Model: {starship?.model}</p>
-            <p>Manufacturer: {starship?.manufacturer}</p>
+         
             </Link>
            
         </div>
